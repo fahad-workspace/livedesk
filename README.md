@@ -15,14 +15,14 @@ Four agents work together under Microsoft Agent Framework on Microsoft Foundry. 
 | Agent | Role |
 |---|---|
 | Match Analyst | Queries Microsoft Fabric (Eventhouse, KQL) to find key moments and compute tactical features such as momentum and pressure |
-| Narrative Writer | Writes commentary in four personas: studio analyst, neutral broadcast, fan mode and kids |
+| Narrative Writer | Writes commentary in five modes: studio analyst, neutral broadcast, fan mode, player focus and kids |
 | Fact Verifier | Checks every sentence against the underlying match events and rejects anything it cannot support, which sends the text back for a rewrite |
 | Localizer | Translates approved output into five languages using a football glossary |
 
 ## Architecture
 
 ```
-Match Simulator (Go)
+MatchFab (Go synthetic match engine)
         |
         v
 Azure Event Hubs
@@ -41,11 +41,11 @@ Localizer (Azure AI Translator, 5 languages, football glossary)
 SSE stream -> Studio Console (React on Azure Static Web Apps)
 ```
 
-The studio console streams live commentary, shows a live momentum graph and produces half-time and full-time recaps on its own.
+The studio console streams live commentary, shows a live momentum graph and produces half-time and full-time recaps on its own. All output is timed and machine-readable, so it can also feed synchronized graphical overlays on a live match feed.
 
 ## Stack
 
-- **Simulator and services:** Go
+- **Data engine and services:** Go (MatchFab)
 - **Ingestion:** Azure Event Hubs
 - **Real-time analytics:** Microsoft Fabric Eventhouse, KQL
 - **Agent orchestration:** Microsoft Agent Framework on Microsoft Foundry
@@ -56,7 +56,8 @@ The studio console streams live commentary, shows a live momentum graph and prod
 
 ## Repo layout
 
-- `cmd/simulator` - Go match simulator that replays a synthetic match timeline at configurable speed
+- `cmd/matchfab` - MatchFab, the synthetic football match engine (data innovation deliverable)
+- `internal/matchfab` - event model, squads and the match engine
 - `docs/` - architecture and design notes
 
 ## Status
